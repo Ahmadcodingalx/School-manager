@@ -102,8 +102,8 @@ public class ConnectionController {
                 //signIn_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
 
                 //Pour fermer la fenêtre
-                //Stage initial = (Stage) signIn_password.getScene().getWindow();
-                //initial.close();
+                Stage initial = (Stage) signIn_password.getScene().getWindow();
+                initial.close();
 
                 // Liaison de la fenêtre d'acceuil
                 Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("dashboard.fxml")));

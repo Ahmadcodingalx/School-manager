@@ -76,12 +76,7 @@ public class InscriptionController {
 
             Alert alert;
 
-            assert connection != null;
-            prepStat = connection.prepareStatement(sql);
-            prepStat.setString(1, signUp_email.getText());
-            prepStat.setString(2, signUp_password.getText());
 
-            resultSet = prepStat.executeQuery();
 
             if (signUp_email.getText().isEmpty() || signUp_password.getText().isEmpty()) { // si on ne rempli pas l'un des deux champ
 
@@ -92,24 +87,20 @@ public class InscriptionController {
                 alert.setContentText("S'il vous plait, remplir tout les champs");
                 alert.showAndWait();
 
-            } else if (resultSet.next()) { // si le mot de passe et le nom d'utilisateur sont corrects
+            } else {
 
-                //Une alerte de type INFORMATION
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Message d'information");
-                alert.setHeaderText(null);
-                alert.setContentText("Connexion réussie!");
-                alert.showAndWait();
+                assert connection != null;
+                prepStat = connection.prepareStatement(sql);
+                prepStat.setString(1, signUp_email.getText());
+                prepStat.setString(2, signUp_password.getText());
 
-                signUp_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
+                prepStat.executeUpdate();
 
-                //Pour fermer la fenêtre
-                Stage initial = (Stage) signUp_password.getScene().getWindow();
-                initial.close();
-
-                // Liaison de la fenêtre d'acceuil
-                Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("acceuil.fxml")));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("connection.fxml")));
                 Stage stg = new Stage();
+
+                Stage initial = (Stage) signUp_btn.getScene().getWindow();
+                initial.close();
 
                 stg.initStyle(StageStyle.TRANSPARENT);
 
@@ -117,18 +108,9 @@ public class InscriptionController {
                 stg.setScene(scn);
                 stg.show();
 
-            } else { // si le mot de passe et le nom d'utilisateur ne sont pas corrects
-
-                //Une alerte de type ERREUR
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Message d'erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("nom d'utilisateur ou mot de passe incorrect");
-                alert.showAndWait();
-
             }
 
-        } catch (SQLException | IOException e ) {
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }

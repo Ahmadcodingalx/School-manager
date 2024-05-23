@@ -82,8 +82,18 @@ public class AddFormController {
 
     }
 
-    public void close() {
-        System.exit(0);
+    public void close() throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("dashboard.fxml")));
+        Stage stg = new Stage();
+
+        Stage initial = (Stage) info_save.getScene().getWindow();
+        initial.close();
+
+        stg.initStyle(StageStyle.TRANSPARENT);
+
+        Scene scn = new Scene(root);
+        stg.setScene(scn);
+        stg.show();
     }
 
     public void reset() {
