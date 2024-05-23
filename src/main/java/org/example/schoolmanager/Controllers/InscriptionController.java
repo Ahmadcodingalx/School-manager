@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class ConnectionController {
+public class InscriptionController {
 
     @FXML
     private Button close;
@@ -33,13 +33,13 @@ public class ConnectionController {
     private AnchorPane main_form;
 
     @FXML
-    private Button signIn_btn;
+    private Button signUp_btn;
 
     @FXML
-    private TextField signIn_email;
+    private TextField signUp_email;
 
     @FXML
-    private PasswordField signIn_password;
+    private PasswordField signUp_password;
 
     private Connection connection;
     private PreparedStatement prepStat;
@@ -48,15 +48,15 @@ public class ConnectionController {
     private double x = 0;
     private double y = 0;
 
-    public void signUp() throws IOException {
-        signIn_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
+    public void signIn() throws IOException {
+        signUp_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
 
         //Pour fermer la fenêtre
 //        Stage initial = (Stage) signIn_btn.getScene().getWindow();
 //        initial.close();
 
         // Liaison de la fenêtre d'acceuil
-        Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("inscription.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("connection.fxml")));
         Stage stg = new Stage();
 
         stg.initStyle(StageStyle.TRANSPARENT);
@@ -67,21 +67,23 @@ public class ConnectionController {
     }
 
     @FXML
-    public void AdminLogin() {
-        String sqlReq = "SELECT * FROM user WHERE email = ? AND password = ?";
+    void AdminLogin() {
+//        String sqlReq = "SELECT * FROM user WHERE email = ? AND password = ?";
+        String sql = "INSERT INTO user (email, password) VALUES (?, ?)";
         connection = DatabaseDB.connectDB();
 
         try {
 
             Alert alert;
 
-            prepStat = connection.prepareStatement(sqlReq);
-            prepStat.setString(1, signIn_email.getText());
-            prepStat.setString(2, signIn_password.getText());
+            assert connection != null;
+            prepStat = connection.prepareStatement(sql);
+            prepStat.setString(1, signUp_email.getText());
+            prepStat.setString(2, signUp_password.getText());
 
             resultSet = prepStat.executeQuery();
 
-            if (signIn_email.getText().isEmpty() || signIn_password.getText().isEmpty()) { // si on ne rempli pas l'un des deux champ
+            if (signUp_email.getText().isEmpty() || signUp_password.getText().isEmpty()) { // si on ne rempli pas l'un des deux champ
 
                 //Une alerte de type ERREUR
                 alert = new Alert(Alert.AlertType.ERROR);
@@ -99,14 +101,14 @@ public class ConnectionController {
                 alert.setContentText("Connexion réussie!");
                 alert.showAndWait();
 
-                //signIn_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
+                signUp_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
 
                 //Pour fermer la fenêtre
-                //Stage initial = (Stage) signIn_password.getScene().getWindow();
-                //initial.close();
+                Stage initial = (Stage) signUp_password.getScene().getWindow();
+                initial.close();
 
                 // Liaison de la fenêtre d'acceuil
-                Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("dashboard.fxml")));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("acceuil.fxml")));
                 Stage stg = new Stage();
 
                 stg.initStyle(StageStyle.TRANSPARENT);
@@ -131,16 +133,17 @@ public class ConnectionController {
         }
     }
 
+
+
     @FXML
-    public void AdminLoginkey(KeyEvent event) {
+    void AdminLoginkey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             AdminLogin(); //La methode s'execute l'orsqu'on appuie sur la touche ENTRER
         }
     }
 
     @FXML
-    public void close(MouseEvent event) {
+    void close(MouseEvent event) {
         System.exit(0);
     }
-
 }
