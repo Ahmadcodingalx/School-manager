@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.example.schoolmanager.HelloApplication;
 import org.example.schoolmanager.IDBConfig.DatabaseDB;
+import org.example.schoolmanager.models.Students;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -42,13 +43,23 @@ public class AddFormController {
     private Button info_save;
 
     public void addStudent() {
-        String sql = "INSERT INTO student (firstname, lastname, dateOfBirth, placeOfBirth, state) VALUES (?, ?, ?, ?, ?)";
-        Connection connection = DatabaseDB.connectDB();
+
+        String name = info_SN.getText().trim();
+        String prenom = info_FN.getText().trim();
+        String date = String.valueOf(info_DOB.getValue());
+        String lieu = info_POB.getText().trim();
+        String etat = info_S.getText().trim();
+
+        Students eleve = new Students();
+        eleve.setNom(name);
+        eleve.setPrenom(prenom);
+        eleve.setNaissance(date);
+        eleve.setLieuDeNaissance(lieu);
+        eleve.setEtat(etat);
 
         try {
 
             Alert alert;
-
 
             if (info_FN.getText().isEmpty() || info_SN.getText().isEmpty() || String.valueOf(info_DOB.getValue()).isEmpty() || info_POB.getText().isEmpty() || info_S.getText().isEmpty()) { // si on ne rempli pas l'un des deux champ
 
@@ -59,19 +70,9 @@ public class AddFormController {
                 alert.setContentText("S'il vous plait, remplir tout les champs");
                 alert.showAndWait();
 
+
             } else {
-
-                assert connection != null;
-                PreparedStatement prepStat = connection.prepareStatement(sql);
-                prepStat.setString(1, info_FN.getText());
-                prepStat.setString(2, info_SN.getText());
-                prepStat.setString(3, String.valueOf(info_DOB.getValue()));
-                prepStat.setString(4, info_POB.getText());
-                prepStat.setString(5, info_S.getText());
-//                prepStat.setString(6, "info_S.getText()");
-
-                prepStat.executeUpdate();
-
+                eleve.studentAdd(eleve);
             }
 
         } catch (SQLException e ) {
@@ -83,6 +84,7 @@ public class AddFormController {
     }
 
     public void close() throws IOException {
+
         Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("dashboard.fxml")));
         Stage stg = new Stage();
 

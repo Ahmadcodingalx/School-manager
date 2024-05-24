@@ -12,4 +12,8 @@ module org.example.schoolmanager {
 
     opens org.example.schoolmanager.IDBConfig to javafx.fxml;
     exports org.example.schoolmanager.IDBConfig;
+
+    opens org.example.schoolmanager.models to javafx.fxml;
+    exports org.example.schoolmanager.models;
+
 }

@@ -7,7 +7,7 @@ public class DatabaseDB {
 
     static  String host = "localhost";
     static String port = "3306";
-    static String user = "root";
+    public static String user = "root";
     static String password = "";
     static String database = "school_manager";
     static String URL = "jdbc:mysql://"+host+":"+port+"/"+database;

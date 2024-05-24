@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.example.schoolmanager.HelloApplication;
 import org.example.schoolmanager.IDBConfig.DatabaseDB;
+import org.example.schoolmanager.models.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -41,10 +42,6 @@ public class ConnectionController {
     @FXML
     private PasswordField signIn_password;
 
-    private Connection connection;
-    private PreparedStatement prepStat;
-    private ResultSet resultSet;
-
     private double x = 0;
     private double y = 0;
 
@@ -68,18 +65,14 @@ public class ConnectionController {
 
     @FXML
     public void AdminLogin() {
-        String sqlReq = "SELECT * FROM user WHERE email = ? AND password = ?";
-        connection = DatabaseDB.connectDB();
+
+        User eleve = new User();
 
         try {
 
             Alert alert;
 
-            prepStat = connection.prepareStatement(sqlReq);
-            prepStat.setString(1, signIn_email.getText());
-            prepStat.setString(2, signIn_password.getText());
-
-            resultSet = prepStat.executeQuery();
+            eleve.userSignIn(eleve);
 
             if (signIn_email.getText().isEmpty() || signIn_password.getText().isEmpty()) { // si on ne rempli pas l'un des deux champ
 
@@ -90,16 +83,9 @@ public class ConnectionController {
                 alert.setContentText("S'il vous plait, remplir tout les champs");
                 alert.showAndWait();
 
-            } else if (resultSet.next()) { // si le mot de passe et le nom d'utilisateur sont corrects
+            } else {
 
-                //Une alerte de type INFORMATION
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Message d'information");
-                alert.setHeaderText(null);
-                alert.setContentText("Connexion réussie!");
-                alert.showAndWait();
-
-                //signIn_btn.getScene().getWindow().hide(); //Pour cacher la fenêtre
+                eleve.userSignIn(eleve);
 
                 //Pour fermer la fenêtre
                 Stage initial = (Stage) signIn_password.getScene().getWindow();
@@ -114,15 +100,6 @@ public class ConnectionController {
                 Scene scn = new Scene(root);
                 stg.setScene(scn);
                 stg.show();
-
-            } else { // si le mot de passe et le nom d'utilisateur ne sont pas corrects
-
-                //Une alerte de type ERREUR
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Message d'erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("nom d'utilisateur ou mot de passe incorrect");
-                alert.showAndWait();
 
             }
 

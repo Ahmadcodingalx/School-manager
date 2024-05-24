@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.example.schoolmanager.HelloApplication;
 import org.example.schoolmanager.IDBConfig.DatabaseDB;
+import org.example.schoolmanager.models.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -23,6 +24,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
+
+import static org.example.schoolmanager.IDBConfig.DatabaseDB.user;
 
 public class InscriptionController {
 
@@ -40,10 +43,6 @@ public class InscriptionController {
 
     @FXML
     private PasswordField signUp_password;
-
-    private Connection connection;
-    private PreparedStatement prepStat;
-    private ResultSet resultSet;
 
     private double x = 0;
     private double y = 0;
@@ -67,16 +66,20 @@ public class InscriptionController {
     }
 
     @FXML
-    void AdminLogin() {
+    public void AdminLogin() {
+
+        User user = new User();
 //        String sqlReq = "SELECT * FROM user WHERE email = ? AND password = ?";
-        String sql = "INSERT INTO user (email, password) VALUES (?, ?)";
-        connection = DatabaseDB.connectDB();
+
+        String mail = signUp_email.getText().trim();
+        String password = signUp_password.getText().trim();
+
+        user.setEmail(mail);
+        user.setPassword(password);
 
         try {
 
             Alert alert;
-
-
 
             if (signUp_email.getText().isEmpty() || signUp_password.getText().isEmpty()) { // si on ne rempli pas l'un des deux champ
 
@@ -89,12 +92,7 @@ public class InscriptionController {
 
             } else {
 
-                assert connection != null;
-                prepStat = connection.prepareStatement(sql);
-                prepStat.setString(1, signUp_email.getText());
-                prepStat.setString(2, signUp_password.getText());
-
-                prepStat.executeUpdate();
+                user.userSignUp(user);
 
                 Parent root = FXMLLoader.load(Objects.requireNonNull(HelloApplication.class.getResource("connection.fxml")));
                 Stage stg = new Stage();
@@ -110,7 +108,7 @@ public class InscriptionController {
 
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -118,14 +116,14 @@ public class InscriptionController {
 
 
     @FXML
-    void AdminLoginkey(KeyEvent event) {
+    public void AdminLoginkey(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             AdminLogin(); //La methode s'execute l'orsqu'on appuie sur la touche ENTRER
         }
     }
 
     @FXML
-    void close(MouseEvent event) {
+    public void close(MouseEvent event) {
         System.exit(0);
     }
 }

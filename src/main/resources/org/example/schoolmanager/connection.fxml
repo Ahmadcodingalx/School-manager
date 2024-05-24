@@ -12,7 +12,7 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.schoolmanager.Controllers.ConnectionController">
     <children>
-        <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0" styleClass="form" stylesheets="@../connection.css">
+        <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
             <children>
                 <AnchorPane layoutX="175.0" prefHeight="450.0" prefWidth="300.0" style="-fx-background-radius: 25;">
                     <children>
@@ -21,9 +21,9 @@
                                 <Font name="Arial Bold" size="25.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="signIn_email" layoutX="26.0" layoutY="190.0" onKeyPressed="#AdminLoginkey" prefHeight="35.0" prefWidth="250.0" promptText="email" styleClass="textfield" stylesheets="@../connection.css" />
-                        <PasswordField fx:id="signIn_password" layoutX="26.0" layoutY="238.0" onKeyPressed="#AdminLoginkey" prefHeight="35.0" prefWidth="250.0" promptText="mot de passe" styleClass="textfield" stylesheets="@../connection.css" />
-                        <Button fx:id="signIn_btn" layoutX="26.0" layoutY="301.0" mnemonicParsing="false" onMouseClicked="#AdminLogin" prefHeight="35.0" prefWidth="250.0" styleClass="connection" stylesheets="@../connection.css" text="Connexion">
+                        <TextField fx:id="signIn_email" layoutX="26.0" layoutY="190.0" onKeyPressed="#AdminLoginkey" prefHeight="35.0" prefWidth="250.0" promptText="email" />
+                        <PasswordField fx:id="signIn_password" layoutX="26.0" layoutY="238.0" onKeyPressed="#AdminLoginkey" prefHeight="35.0" prefWidth="250.0" promptText="mot de passe" />
+                        <Button fx:id="signIn_btn" layoutX="26.0" layoutY="301.0" mnemonicParsing="false" onMouseClicked="#AdminLogin" prefHeight="35.0" prefWidth="250.0" text="Connexion">
                             <font>
                                 <Font name="System Bold" size="15.0" />
                             </font>
